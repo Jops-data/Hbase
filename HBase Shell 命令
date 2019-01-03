@@ -1,0 +1,53 @@
+表管理：
+
+# 查看所有表
+hbase(main)> list
+
+# 创建表
+create<table>,{NAME=> <family>,VERSIONS=> <VERSIONS>}
+# such as :hbase(main)> create 'table1',{NAME=>'CF1',VERSIONS=>2},{NAME=>'CF2',VERSIONS=>2}
+
+# 删除表(先禁用表，再删除)
+hbase(main)>disable 'table1'
+hbase(main)>drop 'table1'
+
+# 查看表结构
+hbase(main)>describe 'table1'
+
+# 修改表结构(先禁用表)
+alter <table>,{NAME=>'CF1'},{NAME=>'CF2',METHOD=>'delete'}
+# such as :
+hbase(main)>distable 'table1'
+hbase(main)>alter 'table1',{NAME=>'body',TTL=>'1243784'}
+hbase(main)>enable 'table1'
+
+# 查看表状态（enable or disable）
+hbase(main)>is_enable 'table1' | is_disable 'table1'
+
+# 统计表记录数
+hbase(main)>count <table>, {INTERVAL => intervalNum, CACHE => cacheNum}
+# INTERVAL设置多少行显示一次及对应的rowkey，默认1000；CACHE每次去取的缓存区大小(一次加载多少条数据)，默认是10，调整该参数可提高查询速度
+# such as:查询表t1中的行数，每100条显示一次，一次加载500条
+hbase(main)> count 't1', {INTERVAL => 100, CACHE => 500}
+
+权限管理：
+
+# 分配权限
+grant <user> <permissions> <table> <column family> <column qualifier> 参数后面用逗号分隔
+# 权限用五个字母表示： "RWXCA".
+# READ('R'), WRITE('W'), EXEC('X'), CREATE('C'), ADMIN('A')
+# such as:给用户test分配对表t1有读写的权限，
+hbase(main)> grant 'test','RW','t1'
+
+# 查看权限
+user_permission <table> 
+# such as:查看表t1的权限列表
+hbase(main)> user_permission 't1'
+
+# 收回权限
+revoke <user> <table> <column family> <columnqualifier>
+# such as:收回test用户在表t1上的权限
+hbase(main)> revoke 'test','t1'
+
+
+表数据增删改查在代码中实现
