@@ -1,3 +1,7 @@
+sudo /usr/local/hbase-1.4.8/bin/start-hbase.sh  # 打开hbase
+sudo /usr/local/hbase-1.4.8/bin/stop-hbase.sh  # 关闭hbase
+nohup hbase thrift start &  # 打开thrift
+
 表管理：
 
 # 查看所有表
